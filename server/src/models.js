@@ -1,0 +1,11 @@
+import mongoose from 'mongoose';
+const suspectSchema = new mongoose.Schema({ suspectId:{type:String,required:true},name:{type:String,required:true},age:Number,occupation:String,role:String,background:String,motive:String,alibi:String,personality:String },{_id:false});
+const evidenceSchema = new mongoose.Schema({ evidenceId:{type:String,required:true},type:{type:String,required:true},title:{type:String,required:true},description:{type:String,required:true},content:String,timestamp:String,relatedSuspects:[String],significance:String },{_id:false});
+const timelineSchema = new mongoose.Schema({time:String,event:String,suspectId:String},{_id:false});
+const solutionSchema=new mongoose.Schema({culpritId:String,culpritName:String,motive:String,method:String,opportunity:String,explanation:String,proof:[String]},{_id:false});
+const progressSchema=new mongoose.Schema({inspectedEvidence:{type:[String],default:[]},bookmarkedEvidence:{type:[String],default:[]},notes:{type:String,default:''}},{_id:false});
+const resultSchema=new mongoose.Schema({correct:Boolean,suspectId:String,submittedAt:Date},{_id:false});
+const mysterySchema = new mongoose.Schema({ userId:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true,index:true},title:String,story:{type:String,required:true},genre:String,difficulty:String,suspectCount:Number,status:{type:String,enum:['GENERATING','READY','FAILED','COMPLETED'],default:'GENERATING',index:true},premise:String,suspects:[suspectSchema],timeline:[timelineSchema],evidence:[evidenceSchema],solution:solutionSchema,progress:{type:progressSchema,default:()=>({})},result:resultSchema,errorMessage:String,generatedAt:Date},{timestamps:true});
+export const Mystery=mongoose.model('Mystery',mysterySchema);
+const userSchema=new mongoose.Schema({name:{type:String,required:true},email:{type:String,required:true,unique:true,lowercase:true,index:true},passwordHash:{type:String,required:true}},{timestamps:true});
+export const User=mongoose.model('User',userSchema);
