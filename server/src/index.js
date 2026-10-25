@@ -13,6 +13,10 @@ import { z } from 'zod';
 import { Mystery, User } from './models.js';
 import { generateCase } from './generate.js';
 
+app.get("/", (req, res) => {
+  res.send("AI Mystery Room API is running!");
+});
+
 const serverDir = dirname(fileURLToPath(import.meta.url));
 const serverEnv = resolve(serverDir, '../.env');
 const projectEnv = resolve(serverDir, '../../.env');
